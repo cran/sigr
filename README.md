@@ -4,7 +4,7 @@ sigr
 
 Concise formatting of significances in R (GPL3 license).
 
-To install in R use: <code>devtools::install\_github('WinVector/sigr')</code>. Please see [Adding polished significance summaries to papers using R](http://www.win-vector.com/blog/2016/10/adding-polished-significance-summaries-to-papers-using-r/) for some discussion.
+Please see [Adding polished significance summaries to papers using R](http://www.win-vector.com/blog/2016/10/adding-polished-significance-summaries-to-papers-using-r/) for some discussion.
 
 See also:
 
@@ -57,7 +57,11 @@ summary(model)
 
 ``` r
 library("sigr")
-cat(render(wrapChiSqTest(model),pLargeCutoff=1))
 ```
 
-    ## **Chi-Square Test** summary: *pseudo-<i>R^2^</i>*=0.023 (<i>&chi;^2^</i>(1,*N*=8)=0.25, *p*=0.61).
+``` r
+cat(render(wrapChiSqTest(model),
+           pLargeCutoff=1, format='markdown'))
+```
+
+**Chi-Square Test** summary: *pseudo-<i>R<sup>2</sup></i>*=0.023 (<i>χ<sup>2</sup></i>(1,*N*=8)=0.25, *p*=0.61).
