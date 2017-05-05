@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="John Mount" />
 
-<meta name="date" content="2017-03-24" />
+<meta name="date" content="2017-05-05" />
 
 <title>sigr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">sigr</h1>
 <h4 class="author"><em>John Mount</em></h4>
-<h4 class="date"><em>2017-03-24</em></h4>
+<h4 class="date"><em>2017-05-05</em></h4>
 
 
 
@@ -144,6 +144,8 @@ model$converged</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapChiSqTest</span>(model),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</code></pre></div>
 <p><b>Chi-Square Test</b> summary: <i>pseudo-<i>R<sup>2</sup></i></i>=0.023 (<i>χ<sup>2</sup></i>(1,<i>N</i>=8)=0.25, <i>p</i>=0.61).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapChiSqTest</span>(d,<span class="st">'pred'</span>,<span class="st">'y'</span>),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</code></pre></div>
+<pre><code>## Warning in is.na(t): is.na() applied to non-(list or vector) of type
+## 'closure'</code></pre>
 <p><b>Chi-Square Test</b> summary: <i>pseudo-<i>R<sup>2</sup></i></i>=0.023 (<i>χ<sup>2</sup></i>(1,<i>N</i>=8)=0.25, <i>p</i>=0.61).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),
                <span class="dt">y=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>))
@@ -201,7 +203,7 @@ m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</sp
 ## sample estimates:
 ##       cor 
 ## 0.8660254</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span>function(modelValues,yValues) <span class="kw">cor</span>(modelValues,yValues)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span>function(modelValues, yValues) { <span class="kw">cor</span>(modelValues, yValues) }
 sigr::<span class="kw">permutationScoreModel</span>(m,y,f)</code></pre></div>
 <pre><code>## [1] &quot;Studentized permutation test: is observed score greater than permuted score,  summary: p=0.021&quot;</code></pre>
 <p>resampleScoreModel</p>
@@ -238,7 +240,13 @@ s &lt;-<span class="st"> </span>sigr::<span class="kw">resampleScoreModel</span>
 ## [1] -0.03314172
 ## 
 ## $sd
-## [1] 0.2252683</code></pre>
+## [1] 0.2252683
+## 
+## $nNA
+## [1] 0
+## 
+## $n
+## [1] 5</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span>s$observedScore/s$sd  <span class="co"># always check size of z relative to bias!</span>
 pValue &lt;-<span class="st"> </span><span class="kw">pt</span>(z,<span class="dt">df=</span><span class="kw">length</span>(y)-<span class="dv">2</span>,<span class="dt">lower.tail=</span><span class="ot">FALSE</span>)
 pValue</code></pre></div>
@@ -269,7 +277,7 @@ sigr::<span class="kw">render</span>(sigr::<span class="kw">resampleScoreModelPa
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
