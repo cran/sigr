@@ -1,8 +1,8 @@
 Package: sigr
 Type: Package
 Title: Format Significance Summaries for Reports
-Version: 0.1.6
-Date: 2017-05-05
+Version: 0.1.7
+Date: 2017-07-04
 Author: John Mount, Nina Zumel
 Maintainer: John Mount <jmount@win-vector.com>
 URL: https://github.com/WinVector/sigr
@@ -17,7 +17,8 @@ LazyData: TRUE
 RoxygenNote: 6.0.1
 Suggests: parallel, knitr, rmarkdown, testthat
 VignetteBuilder: knitr
+ByteCompile: true
 NeedsCompilation: no
-Packaged: 2017-05-05 20:54:48 UTC; johnmount
+Packaged: 2017-07-04 15:49:52 UTC; johnmount
 Repository: CRAN
-Date/Publication: 2017-05-05 23:27:57 UTC
+Date/Publication: 2017-07-04 20:38:28 UTC
