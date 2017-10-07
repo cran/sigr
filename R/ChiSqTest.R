@@ -5,7 +5,8 @@
 #' @param statistic wrapped T-test
 #' @param ... not used, force use of named binding for later arguments
 #' @param format if set the format to return ("html", "latex", "markdown", "ascii")
-#' @param sigDigits integer number of digits to show
+#' @param statDigits integer number of digits to show in summaries.
+#' @param sigDigits integer number of digits to show in significances.
 #' @param pLargeCutoff value to declare non-significance at or above.
 #' @param pSmallCutoff smallest value to print
 #' @return formatted string
@@ -15,6 +16,7 @@
 render.sigr_chisqtest <- function(statistic,
                               ...,
                               format,
+                              statDigits=2,
                               sigDigits=2,
                               pLargeCutoff=0.05,
                               pSmallCutoff=1.0e-5) {
@@ -28,6 +30,7 @@ render.sigr_chisqtest <- function(statistic,
     stop(paste("format",format,"not recognized"))
   }
   fsyms <- syms[format,]
+  statStr <- paste0('%.',statDigits,'g')
   pString <- render(wrapSignificance(statistic$pValue,
                                      symbol='p'),
                     format=format,
@@ -37,13 +40,13 @@ render.sigr_chisqtest <- function(statistic,
   formatStr <- paste0(fsyms['startB'],'Chi-Square Test',fsyms['endB'],
                       ' summary: ',
                       fsyms['startI'],'pseudo-',fsyms['RSq'],fsyms['endI'],'=',
-                      sprintf('%.2g',statistic$pseudoR2),
+                      sprintf(statStr,statistic$pseudoR2),
                       ' (',
                       fsyms['chiSq'],'(',
                       statistic$delta_df,
                       ',', fsyms['startI'],'N',fsyms['endI'],
                       '=',(1+statistic$df.null),')=',
-                      sprintf('%.2g',statistic$delta_deviance),
+                      sprintf(statStr,statistic$delta_deviance),
                       ', ',pString,').')
   formatStr
 }
@@ -191,6 +194,49 @@ wrapChiSqTest.data.frame <- function(x,
                   null.deviance,deviance)
   res$nNA <- nNA
   res$n <- n
+  res
+}
+
+
+#' Format ChiSqTest from anova of logistic model.
+#'
+#' @param x result from stats::anova(stats::glm(family=binomial))
+#' @param ... extra arguments (not used)
+#' @return list of formatted string and fields
+#'
+#' @examples
+#'
+#' d <- data.frame(x1= c(1,2,3,4,5,6,7,7),
+#'                 x2= c(1,0,3,0,5,0,7,0),
+#'                 y= c(TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,FALSE))
+#' model <- glm(y~x1+x2, data=d, family=binomial)
+#' summary(model)
+#' render(wrapChiSqTest(model),
+#'        pLargeCutoff=1, format='ascii')
+#' anov <- anova(model)
+#' print(anov)
+#' lapply(sigr::wrapChiSqTest(anov),
+#'        function(ti) {
+#'          sigr::render(ti,
+#'                       pLargeCutoff= 1,
+#'                       pSmallCutoff= 0,
+#'                       statDigits=4,
+#'                       sigDigits=3,
+#'                       format='ascii')
+#'        })
+#'
+#' @export
+wrapChiSqTest.anova <- function(x,
+                            ...) {
+  n <- length(x$Df)
+  dfNull <- x$`Resid. Df`[[1]]
+  devNull <- x$`Resid. Dev`[[1]]
+  res <- lapply(2:n,
+                function(i) {
+                  wrapChiSqTestImpl(dfNull,  x$`Resid. Df`[[i]],
+                                    devNull,  x$`Resid. Dev`[[i]])
+                })
+  names(res) <- attr(x,"row.names")[2:n]
   res
 }
 

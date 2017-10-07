@@ -8,7 +8,8 @@ NULL
 #' @param statistic wrapped AUC test
 #' @param ... not used, force use of named binding for later arguments
 #' @param format if set the format to return ("html", "latex", "markdown", "ascii")
-#' @param sigDigits integer number of digits to show
+#' @param statDigits integer number of digits to show in summaries.
+#' @param sigDigits integer number of digits to show in significances.
 #' @param pLargeCutoff value to declare non-significance at or above.
 #' @param pSmallCutoff smallest value to print
 #' @return formatted string
@@ -18,6 +19,7 @@ NULL
 render.sigr_aucpermtest <- function(statistic,
                               ...,
                               format,
+                              statDigits=2,
                               sigDigits=2,
                               pLargeCutoff=0.05,
                               pSmallCutoff=1.0e-5) {
@@ -31,17 +33,18 @@ render.sigr_aucpermtest <- function(statistic,
     stop(paste("format",format,"not recognized"))
   }
   fsyms <- syms[format,]
+  stat_format_str <- paste0('%.',statDigits,'g')
   pString <- render(wrapSignificance(statistic$pValue,
                                      symbol='p'),
                     format=format,
                     sigDigits=sigDigits,
                     pLargeCutoff=pLargeCutoff,
                     pSmallCutoff=pSmallCutoff)
-  scoreString <- sprintf('%.2g',statistic$eScore$observedScore)
+  scoreString <- sprintf(stat_format_str,statistic$eScore$observedScore)
   formatStr <- paste0(fsyms['startB'],'AUC test alt. hyp. AUC>AUC(permuted)',fsyms['endB'],
                       ': (',fsyms['startI'],'AUC',fsyms['endI'],
                       '=',scoreString,
-                      ', ',fsyms['startI'],'s.d.',fsyms['endI'],'=',sprintf('%.2g',statistic$eScore$sd),
+                      ', ',fsyms['startI'],'s.d.',fsyms['endI'],'=',sprintf(stat_format_str,statistic$eScore$sd),
                       ', ',pString,').')
   formatStr
 }
@@ -110,7 +113,8 @@ permTestAUC <- function(d,
 #' @param statistic wrapped AUC test
 #' @param ... not used, force use of named binding for later arguments
 #' @param format if set the format to return ("html", "latex", "markdown", "ascii")
-#' @param sigDigits integer number of digits to show
+#' @param statDigits integer number of digits to show in summaries.
+#' @param sigDigits integer number of digits to show in significances.
 #' @param pLargeCutoff value to declare non-significance at or above.
 #' @param pSmallCutoff smallest value to print
 #' @return formatted string
@@ -120,6 +124,7 @@ permTestAUC <- function(d,
 render.sigr_aucresamptest <- function(statistic,
                                     ...,
                                     format,
+                                    statDigits=2,
                                     sigDigits=2,
                                     pLargeCutoff=0.05,
                                     pSmallCutoff=1.0e-5) {
@@ -134,17 +139,18 @@ render.sigr_aucresamptest <- function(statistic,
   }
   fsyms <- syms[format,]
   eScore <- statistic$eScore
+  stat_format_str <- paste0('%.',statDigits,'g')
   pString <- render(wrapSignificance(statistic$pValue,
                                      symbol='p'),
                     format=format,
                     sigDigits=sigDigits,
                     pLargeCutoff=pLargeCutoff,
                     pSmallCutoff=pSmallCutoff)
-  scoreString <- sprintf('%.2g',eScore$observedScore)
+  scoreString <- sprintf(stat_format_str,eScore$observedScore)
   formatStr <- paste0(fsyms['startB'],'AUC test alt. hyp. AUC>0.5',fsyms['endB'],
                 ': (',fsyms['startI'],'AUC',fsyms['endI'],
                 '=',scoreString,
-                ', ',fsyms['startI'],'s.d.',fsyms['endI'],'=',sprintf('%.2g',eScore$sd),
+                ', ',fsyms['startI'],'s.d.',fsyms['endI'],'=',sprintf(stat_format_str,eScore$sd),
                 ', ',pString,').')
   formatStr
 }
@@ -217,7 +223,8 @@ resampleTestAUC <- function(d,
 #' @param statistic wrapped AUC test
 #' @param ... not used, force use of named binding for later arguments
 #' @param format if set the format to return ("html", "latex", "markdown", "ascii")
-#' @param sigDigits integer number of digits to show
+#' @param statDigits integer number of digits to show in summaries.
+#' @param sigDigits integer number of digits to show in significances.
 #' @param pLargeCutoff value to declare non-significance at or above.
 #' @param pSmallCutoff smallest value to print
 #' @return formatted string
@@ -227,6 +234,7 @@ resampleTestAUC <- function(d,
 render.sigr_aucpairtest <- function(statistic,
                                     ...,
                                     format,
+                                    statDigits=2,
                                     sigDigits=2,
                                     pLargeCutoff=0.05,
                                     pSmallCutoff=1.0e-5) {
@@ -241,19 +249,20 @@ render.sigr_aucpairtest <- function(statistic,
   }
   fsyms <- syms[format,]
   eScore <- statistic$eScore
+  stat_format_str <- paste0('%.',statDigits,'g')
   eString <- render(wrapSignificance(statistic$eValue,
                                                  symbol='e'),
                                 format=format,
                                 sigDigits=sigDigits,
                                 pLargeCutoff=pLargeCutoff,
                                 pSmallCutoff=pSmallCutoff)
-  scoreString1 <- sprintf('%.2g',eScore$observedScore1)
-  scoreString2 <- sprintf('%.2g',eScore$observedScore2)
+  scoreString1 <- sprintf(stat_format_str,eScore$observedScore1)
+  scoreString2 <- sprintf(stat_format_str,eScore$observedScore2)
   scoreString <- paste0(scoreString1,';',scoreString2)
   formatStr <- paste0(fsyms['startB'],'AUC test resampled AUC1>AUC2',fsyms['endB'],
                 ': (',fsyms['startI'],'AUCs',fsyms['endI'],
                 '=',scoreString,
-                ', ',fsyms['startI'],'s.d.',fsyms['endI'],'=',sprintf('%.2g',eScore$sd),
+                ', ',fsyms['startI'],'s.d.',fsyms['endI'],'=',sprintf(stat_format_str,eScore$sd),
                 ', ',eString,').')
   formatStr
 }

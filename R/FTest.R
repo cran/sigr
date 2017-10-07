@@ -15,7 +15,8 @@ wrapFTest <- function(x,...) UseMethod('wrapFTest')
 #' @param statistic wrapped test
 #' @param ... not used, force use of named binding for later arguments
 #' @param format if set the format to return ("html", "latex", "markdown", "ascii")
-#' @param sigDigits integer number of digits to show
+#' @param statDigits integer number of digits to show in summaries.
+#' @param sigDigits integer number of digits to show in significances.
 #' @param pLargeCutoff value to declare non-significance at or above.
 #' @param pSmallCutoff smallest value to print
 #' @return formatted string
@@ -25,6 +26,7 @@ wrapFTest <- function(x,...) UseMethod('wrapFTest')
 render.sigr_ftest <- function(statistic,
                               ...,
                               format,
+                              statDigits=3,
                               sigDigits=2,
                               pLargeCutoff=0.05,
                               pSmallCutoff=1.0e-5) {
@@ -44,13 +46,14 @@ render.sigr_ftest <- function(statistic,
                     sigDigits=sigDigits,
                     pLargeCutoff=pLargeCutoff,
                     pSmallCutoff=pSmallCutoff)
+  statStr <- paste0('%.',statDigits,'g')
   formatStr =
     paste0(fsyms['startB'],'F Test',fsyms['endB'],
            ' summary: (',fsyms['RSq'],'=',
-           sprintf('%.2g',statistic$R2),
+           sprintf(statStr,statistic$R2),
            ', ',fsyms['startI'],'F',fsyms['endI'],
            '(',statistic$numdf,',',statistic$dendf,')=',
-           sprintf('%.2g',statistic$FValue),
+           sprintf(statStr,statistic$FValue),
            ', ',pString,').')
   formatStr
 }
@@ -204,3 +207,64 @@ wrapFTest.data.frame <- function(x,
   res$nNA <- nNA
   res
 }
+
+
+#' Wrap quality statistic of a linear relation from anova.
+#'
+#' @param x result from stats::anova(stats::lm())
+#' @param ... extra arguments (not used)
+#' @return list of formatted string and fields
+#'
+#' @examples
+#'
+#' d <- data.frame(x1 = c(1,2,3,4,5,6,7,7),
+#'                 x2 = c(1,0,3,0,5,6,0,7),
+#'                 y =  c(1,1,2,2,3,3,4,4))
+#' model <- lm(y~x1+x2, data=d)
+#' summary(model)
+#' sigr::wrapFTest(model)
+#' anov <- stats::anova(model)
+#' print(anov)
+#' lapply(sigr::wrapFTest(anov),
+#'        function(ti) {
+#'          sigr::render(ti,
+#'                       pLargeCutoff= 1,
+#'                       pSmallCutoff= 0,
+#'                       statDigits=4,
+#'                       sigDigits=3,
+#'                       format='ascii')
+#'        })
+#'
+#' @export
+wrapFTest.anova <- function(x,
+                            ...) {
+  n <- length(x$Df)
+  res <- lapply(seq_len(n-1),
+                function(i) {
+                  wrapFTestImpl(x$Df[[i]], x$Df[[n]], x$`F value`[[i]])
+                })
+  names(res) <- attr(x,"row.names")[seq_len(n-1)]
+  res
+}
+
+#' Wrap quality statistic of a linear relation from ezANOVA (package ez).
+#'
+#' Please see \url{https://github.com/WinVector/sigr/issues/1#issuecomment-322311947} for an example.
+#'
+#' @param x list result from ezANOVA (package ez).
+#' @param ... extra arguments (not used)
+#' @return list of formatted string and fields
+#'
+#'
+#' @export
+wrapFTestezANOVA <- function(x,
+                            ...) {
+  fs <- lapply(seq_len(nrow(x$ANOVA)),
+               function(rowIndex) {
+                 row <- x$ANOVA[rowIndex, , drop=FALSE]
+                 sigr::wrapFTestImpl(row$DFn, row$DFd, row$F)
+               })
+  names(fs) <- x$ANOVA$Effect
+  fs
+}
+

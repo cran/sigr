@@ -1,8 +1,8 @@
 
 
-#' Format a T-test (difference in means by group)
+#' Format Cohen-D (effect size between groups)
 #'
-#' @param statistic wrapped T-test
+#' @param statistic wrapped effsize::cohen.d
 #' @param ... not used, force use of named binding for later arguments
 #' @param format if set the format to return ("html", "latex", "markdown", "ascii")
 #' @param statDigits integer number of digits to show in summaries (not yet implemented).
@@ -13,15 +13,15 @@
 #'
 #'
 #' @export
-render.sigr_ttest <- function(statistic,
+render.sigr_cohend <- function(statistic,
                               ...,
                               format,
-                              statDigits=2,
+                              statDigits=3,
                               sigDigits=2,
-                              pLargeCutoff=0.05,
-                              pSmallCutoff=1.0e-5) {
+                              pLargeCutoff=1,
+                              pSmallCutoff=0) {
   if(length(list(...))>0) {
-    stop("render.sigr_ttest unexpected arguments")
+    stop("render.sigr_cohend unexpected arguments")
   }
   if (missing(format) || is.null(format)) {
     format <- getRenderingFormat()
@@ -30,35 +30,35 @@ render.sigr_ttest <- function(statistic,
     stop(paste("format",format,"not recognized"))
   }
   fsyms <- syms[format,]
-  tt <- statistic$tt
-  pString <- render(wrapSignificance(tt$p.value,
+  cohen_d <- statistic$cohen_d
+  stat_format_str <- paste0('%.',statDigits,'g')
+  pString <- render(wrapSignificance(1-cohen_d$conf.level,
                                      symbol='p'),
                     format=format,
                     pLargeCutoff=pLargeCutoff,
                     pSmallCutoff=pSmallCutoff)
-  formatStr <- paste0(fsyms['startB'],tt$method,fsyms['endB'],
-                     ', ',tt$alternative,
-                     ': (',fsyms['startI'],'t',fsyms['endI'],
-                     '=',paste(sprintf('%.2g',tt$statistic),collapse=','),
-                     ', ',fsyms['startI'],'df',fsyms['endI'],'=',
-                     sprintf('%.2g',tt$parameter),', ',
-                     pString,').')
+  formatStr <- paste0(fsyms['startB'],cohen_d$method,fsyms['endB'],
+                      ': ', sprintf(stat_format_str,cohen_d$estimate),
+                      ' ("',cohen_d$magnitude,
+                      '", interval [', sprintf(stat_format_str,cohen_d$conf.int[[1]]),
+                      ', ', sprintf(stat_format_str,cohen_d$conf.int[[2]]),'] at ',
+                      pString,').')
   formatStr
 }
 
-#' Wrap t.test (difference in means by group).
+#' Wrap Cohen's D (effect size between groups).
 #'
 #' @param x numeric, data.frame or test.
 #' @param ... extra arguments
 #'
-#' @seealso \code{\link{wrapTTest.htest}}, and  \code{\link{wrapTTest.data.frame}}
+#' @seealso \code{\link[effsize]{cohen.d}}, \code{\link{wrapCohenD.effsize}}, and \code{\link{wrapCohenD.data.frame}}
 #' @export
-wrapTTest <- function(x,...) UseMethod('wrapTTest')
+wrapCohenD <- function(x,...) UseMethod('wrapCohenD')
 
 
-#' Wrap t.test (difference in means by group).
+#' Wrap Cohen's D (effect size between groups).
 #'
-#' @param x t.test result
+#' @param x effsize::cohen.d result
 #' @param ... extra arguments (not used)
 #' @return formatted string and fields
 #'
@@ -66,32 +66,30 @@ wrapTTest <- function(x,...) UseMethod('wrapTTest')
 #'
 #' d <- data.frame(x=c(1,2,3,4,5,6,7,7),
 #'                 y=c(1,1,2,2,3,3,4,4))
-#' tt <- t.test(d$x,d$y)
-#' render(wrapTTest(tt),pLargeCutoff=1)
-#' # confirm not rescaling, as a correlation test would
-#' render(wrapTTest(t.test(d$x,2*d$y)),pLargeCutoff=1)
+#' cohen_d <- effsize::cohen.d(d$x,d$y)
+#' render(wrapCohenD(cohen_d))
 #'
 #' @export
-wrapTTest.htest <- function(x,
-                          ...) {
+wrapCohenD.effsize <- function(x,
+                            ...) {
   if(length(list(...))) {
-    stop('wrapTTest extra arguments')
+    stop('wrapCohenD extra arguments')
   }
-  if(!'htest' %in% class(x)) {
-    stop('wrapTTest expected class htest')
+  if(!'effsize' %in% class(x)) {
+    stop('wrapCohenD expected class effsize')
   }
-  r <- list(tt=x,
-       test='t.test')
-  class(r) <- c('sigr_ttest', 'sigr_statistic')
+  r <- list(cohen_d=x,
+            test='cohen.d')
+  class(r) <- c('sigr_cohend', 'sigr_statistic')
   r
 }
 
-#' Wrap t.test (difference in means by group).
+#' Wrap Cohen's D (effect size between groups).
 #'
 #' @param x data.frame
 #' @param Column1Name character column 1 name
 #' @param Column2Name character column 2 name
-#' @param ... extra arguments passed to ttest
+#' @param ... extra arguments passed to effsize::cohen.d
 #' @param na.rm logical, if TRUE remove NA values
 #' @return formatted string and fields
 #'
@@ -99,26 +97,24 @@ wrapTTest.htest <- function(x,
 #'
 #' d <- data.frame(x=c(1,2,3,4,5,6,7,7),
 #'                 y=c(1,1,2,2,3,3,4,4))
-#' render(wrapTTest(d,'x','y'),pLargeCutoff=1)
-#' # confirm p not order depedent
-#' render(wrapTTest(d,'y','x'),pLargeCutoff=1)
+#' render(wrapCohenD(d,'x','y'))
 #'
-#' @importFrom stats t.test
+#' @importFrom effsize cohen.d
 #'
 #' @export
-wrapTTest.data.frame <- function(x,
+wrapCohenD.data.frame <- function(x,
                                  Column1Name,
                                  Column2Name,
                                  ...,
                                  na.rm= FALSE) {
   if(!'data.frame' %in% class(x)) {
-    stop('sigr::wrapTTest expected class data.frame')
+    stop('sigr::wrapCohenD expected class data.frame')
   }
   if(!is.numeric(x[[Column1Name]])) {
-    stop("sigr::wrapTTest expected column 1 to be numeric")
+    stop("sigr::wrapCohenD expected column 1 to be numeric")
   }
   if(!is.numeric(x[[Column2Name]])) {
-    stop("sigr::wrapTTest expected column 2 to be numeric")
+    stop("sigr::wrapCohenD expected column 2 to be numeric")
   }
   c1 <- x[[Column1Name]]
   c2 <- x[[Column2Name]]
@@ -129,13 +125,13 @@ wrapTTest.data.frame <- function(x,
     c2 <- c2[goodPosns]
   }
   n <- length(c1)
-  tt <- t.test(c1,c2,...)
-  r <- list(tt=tt,
-            test='t.test',
+  cohen_d <- cohen.d(c1,c2,...)
+  r <- list(cohen_d=cohen_d,
+            test='cohen.d',
             Column1Name=Column1Name,
             Column2Name=Column2Name,
             n=n,
             nNA=nNA)
-  class(r) <- c('sigr_ttest', 'sigr_statistic')
+  class(r) <- c('sigr_cohend', 'sigr_statistic')
   r
 }
