@@ -1,4 +1,10 @@
 
+# sigr 0.2.1 2017-10-14
+
+ * Pass more arguments to tests.
+ * Switch to own Cohen-d estimate.
+ * Add vector signatures.
+
 # sigr 0.2.0 2017-10-07
 
  * Make sigfig a bit more flexible.

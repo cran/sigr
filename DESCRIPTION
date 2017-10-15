@@ -1,8 +1,8 @@
 Package: sigr
 Type: Package
 Title: Format Significance Summaries for Reports
-Version: 0.2.0
-Date: 2017-10-07
+Version: 0.2.1
+Date: 2017-10-14
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -20,14 +20,14 @@ Description: Succinctly format significance summaries of
 License: GPL-3
 LazyData: TRUE
 RoxygenNote: 6.0.1
-Imports: effsize
+Imports: pwr
 Suggests: parallel, knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 ByteCompile: true
 NeedsCompilation: no
-Packaged: 2017-10-07 18:40:31 UTC; johnmount
+Packaged: 2017-10-14 20:06:21 UTC; johnmount
 Author: John Mount [aut, cre],
   Nina Zumel [aut],
   Win-Vector LLC [cph]
 Repository: CRAN
-Date/Publication: 2017-10-07 23:38:28 UTC
+Date/Publication: 2017-10-15 14:50:00 UTC

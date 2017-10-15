@@ -6,7 +6,7 @@
 #' @param statistic wrapped cor.test.
 #' @param ... extra arguments (not used)
 #' @param format if set the format to return ("html", "latex", "markdown", "ascii", "docx", ...)
-#' @param statDigits integer number of digits to show in summaries (not yet implemented).
+#' @param statDigits integer number of digits to show in summaries.
 #' @param sigDigits integer number of digits to show in significances.
 #' @param pLargeCutoff value to declare non-significance at or above.
 #' @param pSmallCutoff smallest value to print
@@ -38,6 +38,7 @@ render.sigr_cortest <- function(statistic,
     stop(paste("format",format,"not recognized"))
   }
   fsyms <- syms[format,]
+  stat_format_str <- paste0('%.',statDigits,'g')
   ct <- statistic$ct
   pString <- render(wrapSignificance(ct$p.value,
                                      symbol='p'),
@@ -46,7 +47,7 @@ render.sigr_cortest <- function(statistic,
                     pSmallCutoff=pSmallCutoff)
   formatStr <- paste0(fsyms['startB'],ct$method,fsyms['endB'],
                 ': (',fsyms['startI'],'r',fsyms['endI'],
-                '=',sprintf('%.2g',ct$estimate),
+                '=',sprintf(stat_format_str,ct$estimate),
                 ', ',pString,').')
   formatStr
 }
@@ -95,6 +96,11 @@ wrapCorTest.htest <- function(x,
 #' @param Column1Name character column 1 name
 #' @param Column2Name character column 2 name
 #' @param ... extra arguments passed to cor.test
+#' @param alternative passed to \code{\link[stats]{cor.test}}
+#' @param method passed to \code{\link[stats]{cor.test}}
+#' @param exact passed to \code{\link[stats]{cor.test}}
+#' @param conf.level passed to \code{\link[stats]{cor.test}}
+#' @param continuity passed to \code{\link[stats]{cor.test}}
 #' @param na.rm logical, if TRUE remove NA values
 #' @return wrapped stat
 #'
@@ -112,6 +118,9 @@ wrapCorTest.data.frame <- function(x,
                                    Column1Name,
                                    Column2Name,
                                    ...,
+                                   alternative = c("two.sided", "less", "greater"),
+                                   method = c("pearson", "kendall", "spearman"),
+                                   exact = NULL, conf.level = 0.95, continuity = FALSE,
                                    na.rm= FALSE) {
   if(!is.numeric(x[[Column1Name]])) {
     stop("wrapr::wrapCorTest.data.frame column 1 must be numeric")
@@ -128,7 +137,11 @@ wrapCorTest.data.frame <- function(x,
     c2 <- c2[goodPosns]
   }
   n <- length(c1)
-  ct <- cor.test(c1,c2,...)
+  ct <- stats::cor.test(x=c1,y=c2,
+                        alternative = alternative,
+                        method = method,
+                        exact = exact, conf.level = conf.level, continuity = continuity,
+                        ...)
   r <- list(ct=ct,
             test='cor.test',
             Column1Name=Column1Name,
