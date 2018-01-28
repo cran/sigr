@@ -1,8 +1,8 @@
 Package: sigr
 Type: Package
 Title: Succinct and Correct Statistical Summaries for Reports
-Version: 0.2.2
-Date: 2017-10-22
+Version: 0.2.3
+Date: 2018-01-28
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -25,9 +25,9 @@ Suggests: parallel, knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 ByteCompile: true
 NeedsCompilation: no
-Packaged: 2017-10-22 16:11:19 UTC; johnmount
+Packaged: 2018-01-28 18:01:08 UTC; johnmount
 Author: John Mount [aut, cre],
   Nina Zumel [aut],
   Win-Vector LLC [cph]
 Repository: CRAN
-Date/Publication: 2017-10-22 16:50:12 UTC
+Date/Publication: 2018-01-28 21:44:24 UTC
