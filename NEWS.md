@@ -1,4 +1,13 @@
 
+# sigr 0.2.6 2018-05-25
+
+ * Adjust dependencies.
+ * Fix some documentation.
+ * Add as.character() override.
+ * Improve error messages.
+ * More flexible formatting.
+ * Fix pre-formatting on FTest (though this may not be not the pattern we want to user later).
+
 # sigr 0.2.5 2018-04-24
 
  * Allow more formats.

@@ -14,5 +14,5 @@
 #' @name sigr
 NULL
 
-#' @importFrom pwr pwr.2p.test
+#' @importFrom wrapr stop_if_dot_args
 NULL

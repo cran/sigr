@@ -20,13 +20,11 @@ render.sigr_pwr_htest <- function(statistic,
                               sigDigits=2,
                               pLargeCutoff=1,
                               pSmallCutoff=1.0e-5) {
-  if(length(list(...))>0) {
-    stop("render.sigr_pwr_htest unexpected arguments")
-  }
+  wrapr::stop_if_dot_args(substitute(list(...)), "sigr::render.sigr_pwr_htest")
   if (missing(format) || is.null(format)) {
     format <- getRenderingFormat()
   }
-  if(!(format %in% formats)) {
+  if(!isTRUE(format %in% formats)) {
     format <- "ascii"
   }
   fsyms <- syms[format,]
@@ -68,7 +66,9 @@ render.sigr_pwr_htest <- function(statistic,
 #'
 #' @seealso \code{\link[pwr]{pwr.2p.test}}
 #' @export
-wrapPWR <- function(x,...) UseMethod('wrapPWR')
+wrapPWR <- function(x,...) {
+  UseMethod('wrapPWR')
+}
 
 
 #' Wrap pwr test.
@@ -79,17 +79,17 @@ wrapPWR <- function(x,...) UseMethod('wrapPWR')
 #'
 #' @examples
 #'
-#' # Example from pwr package
-#' #  Exercise 6.1 p. 198 from Cohen (1988)
-#' test <- pwr::pwr.2p.test(h=0.3,n=80,sig.level=0.05,alternative="greater")
-#' wrapPWR(test)
+#' if(require("pwr", quietly = TRUE)) {
+#'   # Example from pwr package
+#'   #  Exercise 6.1 p. 198 from Cohen (1988)
+#'   test <- pwr::pwr.2p.test(h=0.3,n=80,sig.level=0.05,alternative="greater")
+#'   wrapPWR(test)
+#' }
 #'
 #' @export
 wrapPWR.power.htest <- function(x,
                                 ...) {
-  if(length(list(...))) {
-    stop('wrapTTest extra arguments')
-  }
+  wrapr::stop_if_dot_args(substitute(list(...)), "sigr::wrapPWR.power.htest")
   if(!('power.htest' %in% class(x))) {
     stop('wrapTTest expected class htest')
   }

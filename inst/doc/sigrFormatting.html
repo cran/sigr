@@ -12,7 +12,7 @@
 
 <meta name="author" content="John Mount" />
 
-<meta name="date" content="2018-04-24" />
+<meta name="date" content="2018-05-25" />
 
 <title>sigr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">sigr</h1>
 <h4 class="author"><em>John Mount</em></h4>
-<h4 class="date"><em>2018-04-24</em></h4>
+<h4 class="date"><em>2018-05-25</em></h4>
 
 
 
@@ -171,7 +171,7 @@ d &lt;-<span class="st"> </span><span class="kw">rbind</span>(d,d,d,d)
 sigr<span class="op">::</span><span class="kw">resampleTestAUC</span>(d,<span class="st">'x1'</span>,<span class="st">'y'</span>,<span class="ot">TRUE</span>,
                 <span class="dt">nrep=</span><span class="dv">200</span>,
                 <span class="dt">parallelCluster=</span>parallelCluster)</code></pre></div>
-<p>[1] “AUC test alt. hyp. AUC&gt;0.5: (AUC=0.66, s.d.=0.11, p=n.s.).”</p>
+<p>[1] “<b>AUC test alt. hyp. AUC&gt;0.5</b>: (<i>AUC</i>=0.66, <i>s.d.</i>=0.11, <i>p</i>=n.s.).”</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">25325</span>)
 d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),
                 <span class="dt">x2=</span><span class="dv">1</span>,
@@ -181,7 +181,7 @@ d &lt;-<span class="st"> </span><span class="kw">rbind</span>(d,d,d,d)
 sigr<span class="op">::</span><span class="kw">testAUCpair</span>(d,<span class="st">'x1'</span>,<span class="st">'x2'</span>,<span class="st">'y'</span>,<span class="ot">TRUE</span>,
                     <span class="dt">nrep=</span><span class="dv">200</span>,
                     <span class="dt">parallelCluster=</span>parallelCluster)</code></pre></div>
-<p>[1] “AUC test resampled AUC1&gt;AUC2: (AUCs=0.66;0.5, s.d.=0.11, e=n.s.).”</p>
+<p>[1] “<b>AUC test resampled AUC1&gt;AUC2</b>: (<i>AUCs</i>=0.66;0.5, <i>s.d.</i>=0.11, <i>e</i>=n.s.).”</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(parallelCluster)) {
   parallel<span class="op">::</span><span class="kw">stopCluster</span>(parallelCluster)
 }</code></pre></div>
@@ -203,7 +203,7 @@ m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</sp
 ## 0.8660254</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="cf">function</span>(modelValues, yValues) { <span class="kw">cor</span>(modelValues, yValues) }
 sigr<span class="op">::</span><span class="kw">permutationScoreModel</span>(m,y,f)</code></pre></div>
-<pre><code>## [1] &quot;Studentized permutation test: is observed score greater than permuted score,  summary: p=0.021&quot;</code></pre>
+<pre><code>## [1] &quot;&lt;b&gt;Studentized permutation test&lt;/b&gt;: is observed score greater than permuted score,  summary: &lt;i&gt;p&lt;/i&gt;=0.021&quot;</code></pre>
 <p>resampleScoreModel</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">25325</span>)
 y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span>

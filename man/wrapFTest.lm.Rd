@@ -2,9 +2,9 @@
 % Please edit documentation in R/FTest.R
 \name{wrapFTest.lm}
 \alias{wrapFTest.lm}
-\title{Wrap quality statistic of a linear regression.}
+\title{Wrap quality statistic of identity r regression.}
 \usage{
-\method{wrapFTest}{lm}(x, ..., format, pLargeCutoff = 0.05,
+\method{wrapFTest}{lm}(x, ..., format = NULL, pLargeCutoff = 0.05,
   pSmallCutoff = 1e-05)
 }
 \arguments{
@@ -22,7 +22,7 @@
 formatted string
 }
 \description{
-Wrap quality statistic of a linear regression.
+Wrap quality statistic of identity r regression.
 }
 \examples{
 
