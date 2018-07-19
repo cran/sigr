@@ -12,7 +12,7 @@
 
 <meta name="author" content="John Mount" />
 
-<meta name="date" content="2018-07-03" />
+<meta name="date" content="2018-07-19" />
 
 <title>sigr</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">sigr</h1>
 <h4 class="author"><em>John Mount</em></h4>
-<h4 class="date"><em>2018-07-03</em></h4>
+<h4 class="date"><em>2018-07-19</em></h4>
 
 
 
@@ -113,7 +113,7 @@ d<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFTest</span>(d,<span class="st">'prediction'</span>,<span class="st">'y'</span>),
                               <span class="dt">pSmallCutoff=</span><span class="fl">1.0e-12</span>))</code></pre></div>
 <p><b>F Test</b> summary: (<i>R<sup>2</sup></i>=0.86, <i>F</i>(1,18)=111, <i>p</i>=4.1e-09).</p>
-<p>Chi-squared test examples (quality of a probabilty model of a two category outcome).</p>
+<p>Chi-squared test examples (quality of a probability model of a two category outcome).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),
        <span class="dt">y=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>))
 model &lt;-<span class="st"> </span><span class="kw">glm</span>(y<span class="op">~</span>x,<span class="dt">data=</span>d,<span class="dt">family=</span>binomial)
