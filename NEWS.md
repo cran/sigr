@@ -1,5 +1,11 @@
 
-# sigr 1.0.1 2018-09-28.
+# sigr 1.0.2 2018-10-04
+
+ * Fix end conditons of differnce of binomials.
+ * More interfaces to Binomial test.
+ * Student-T summary.
+ 
+# sigr 1.0.1 2018-09-28
 
  * Binomial test.
  * Difference of binomials test.
