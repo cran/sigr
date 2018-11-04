@@ -1,8 +1,8 @@
 Package: sigr
 Type: Package
 Title: Succinct and Correct Statistical Summaries for Reports
-Version: 1.0.2
-Date: 2018-10-04
+Version: 1.0.3
+Date: 2018-11-03
 Authors@R: c(
     person("John", "Mount", email = "jmount@win-vector.com", role = c("aut", "cre")),
     person("Nina", "Zumel", email = "nzumel@win-vector.com", role = c("aut")),
@@ -21,14 +21,14 @@ License: GPL-3
 LazyData: TRUE
 RoxygenNote: 6.1.0
 Depends: R (>= 3.2.1)
-Imports: wrapr (>= 1.6.2), stats
+Imports: wrapr (>= 1.6.3), stats
 Suggests: pwr, parallel, knitr, rmarkdown, testthat
 VignetteBuilder: knitr
 ByteCompile: true
 NeedsCompilation: no
-Packaged: 2018-10-05 01:59:14 UTC; johnmount
+Packaged: 2018-11-03 23:52:02 UTC; johnmount
 Author: John Mount [aut, cre],
   Nina Zumel [aut],
   Win-Vector LLC [cph]
 Repository: CRAN
-Date/Publication: 2018-10-05 05:10:07 UTC
+Date/Publication: 2018-11-04 05:20:03 UTC

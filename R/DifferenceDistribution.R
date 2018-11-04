@@ -3,6 +3,38 @@
 NULL
 
 
+# TODO: new padding/shrinking algo for Bernoulli_diff_stat().
+#
+# For experiment sizes, A, B p we are roughly mixing
+# an experiment of size A, rate p scaled by max(1, B/A)
+# with an experiment of size B, rate p scaled by max(1, B/A).
+#
+# So the variance of the rate estimate is going to be
+#
+# max(1, B/A)^2 * p*(1-p) * A / A^2 + max(1, A/B)^2 * p*(1-p) * B / B^2
+# = p*(1-p) * ( max(1, B/A)^2 / A + max(1, A/B)^2 / B )
+#
+# the p*(1-p) term is not varying, with A, B so define
+#
+# f(A, B) := max(1, B/A)^2 / A + max(1, A/B)^2 / B
+#
+# Our current padding scheme when A>B is to run experiments of size
+# ( A + (B - (A %% B)), B ) and
+# ( A - (A %% B), B ).
+#
+# Instead we should run more variations.
+#
+# 1) Write A/B as a short continued fraction. Take the first or second
+#    convergent of this (the last one where at least one of the numerator or
+#    denominator or small).  A/B ~ x/y so y A ~ x B.
+# 2) Solve (by rounding) for a, b such that y (A + a) = x (B + b)
+#    (easy look at floor(y A / ( x B)) and ceiling(y A / (x B))
+#     and pick b integral and sign satifying and then a for equality).
+# 3) push best over and best under (according to f()) as the bounding estimates.
+#
+#
+
+
 Bernoulli_diff_dist_impl <- function(nA, nB,
                                      probi, test_rate_difference) {
   calc_probs <- function(nA, nB) {
@@ -22,6 +54,8 @@ Bernoulli_diff_dist_impl <- function(nA, nB,
       v2 <- unlist(lapply(v2, function(vi) c(vi, pad)))[1:(nA+1)]
     }
     probs <- convolve(v1, v2, type = "open")
+    probs <- pmax(probs, 0)
+    probs <- probs/sum(probs)
     # check <- numeric(nA + nB + 1)
     # for(i in 0:nA) {
     #   for(j in 0:nB) {
@@ -107,6 +141,7 @@ Bernoulli_diff_dist_impl <- function(nA, nB,
 #' @param kB number of B successes observed.
 #' @param nB number of B experiments.
 #' @param test_rate_difference numeric, difference in rate of A-B to test.  Note: it is best to specify this prior to looking at the data.
+#' @param common_rate rate numeric, assumed null-rate.
 #' @return Bernoulli difference test statistic.
 #'
 #' @examples
@@ -125,7 +160,7 @@ Bernoulli_diff_dist_impl <- function(nA, nB,
 #' @export
 #'
 Bernoulli_diff_stat <- function(kA, nA, kB, nB,
-                                test_rate_difference) {
+                                test_rate_difference, common_rate) {
   is.wholenumber <-
     function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
   if((nA<=0)||(!is.wholenumber(nA))) {
@@ -140,12 +175,18 @@ Bernoulli_diff_stat <- function(kA, nA, kB, nB,
   if((kB<0)||(kB>nB)||(!is.wholenumber(kB))) {
     stop("kB must be an integer in the range [0, nB]")
   }
-  probi <- (kA+kB)/(nA+nB)
   used_observed_rate <- FALSE
+  if(missing(common_rate) || is.null(common_rate)) {
+    used_observed_rate <- TRUE
+    probi <- (kA+kB)/(nA+nB)
+  } else {
+    probi <- common_rate
+  }
+  used_observed_rate_diff <- FALSE
   if(missing(test_rate_difference) || is.null(test_rate_difference)) {
     # test_rate_difference = abs(kA/nA - kB/nB)
     test_rate_difference <- abs(nB*kA - nA*kB)/(nA*nB)
-    used_observed_rate <- TRUE
+    used_observed_rate_diff <- TRUE
   }
   divides_even <- (nA==nB) ||
     ((nA>nB)&&((nA %% nB)==0)) ||
@@ -191,6 +232,7 @@ Bernoulli_diff_stat <- function(kA, nA, kB, nB,
             probi = probi,
             test_rate_difference = test_rate_difference,
             used_observed_rate = used_observed_rate,
+            used_observed_rate_diff = used_observed_rate_diff,
             divides_even = divides_even,
             Aadjusted = Aadjusted,
             Badjusted = Badjusted,
@@ -259,11 +301,12 @@ render.sigr_Bernoulli_diff_test <- function(statistic,
     pString <- paste0(pStringL, ", ", pStringH)
   }
   formatStr <- paste0(fsyms['startB'], "Bernoulli difference test",fsyms['endB'],
-                      ': (A', ifelse(statistic$Aadjusted, "~", "="),
+                      ': (A=',
                       statistic$kA, "/", statistic$nA, "=", sprintf(stat_format_str,statistic$kA/statistic$nA),
-                      ', B', ifelse(statistic$Badjusted, "~", "="),
+                      ', B=',
                       statistic$kB, "/", statistic$nB, "=", sprintf(stat_format_str,statistic$kB/statistic$nB),
-                      ", ", ifelse(statistic$used_observed_rate, "post ", "prior "), sprintf(stat_format_str,statistic$test_rate_difference),
+                      ", ", ifelse(statistic$used_observed_rate, "=", "~"), sprintf(stat_format_str,statistic$probi),
+                      ", ", ifelse(statistic$used_observed_rate_diff, "post ", "prior "), sprintf(stat_format_str,statistic$test_rate_difference),
                       " ", statistic$kind,
                       '; ',pString,').')
   formatStr
