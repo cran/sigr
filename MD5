@@ -1,6 +1,6 @@
-2f778a8d7384fad9b7f948d3d82c3cc8 *DESCRIPTION
+06a4fd531f822c2ada6ab35fb7285c35 *DESCRIPTION
 ec748e9b24a8f6ea8353871eaa0ec92e *NAMESPACE
-2d53c14aa3cf565221f87eb434da3a9c *NEWS.md
+9c6f5e65ad1cdb9ab2fe8c234874b60a *NEWS.md
 0b27bb2882cebed1233552ae9aebe7da *R/AUCTest.R
 f525cc8dae30b7e15d59789fe33a019f *R/BinomTest.R
 cc81a104119d923fca67cf01b9458be9 *R/ChiSqTest.R
@@ -20,14 +20,14 @@ ea86b2b4d77e56a502dacc5eac4d5320 *R/pwr.R
 bf52a48e3b36ef67caae52168ce25f46 *R/sigr.R
 d9eb5d4a6202938f3fa3a4b7cc5d2497 *R/toPresentation.R
 8c5d946ebb8ab9f885488efd32d94c4e *R/wrapr_exports.R
-051ea04f40d52209b513f26451f66d35 *README.md
-02cdfd5e840643f75dd189ebe9731faa *build/vignette.rds
+9b2e2f00889a1c07ce6ca96d07082f9e *README.md
+c9d8468ad64b66a52ba622167c9c4260 *build/vignette.rds
 796e6fc10f284b546ca2f402ab074316 *inst/doc/lmExample.R
 c2f237a3ef296b8c85aaeebbd7571c8c *inst/doc/lmExample.Rmd
-dbf60aa13039330307c24e6d440eb565 *inst/doc/lmExample.html
+32d699223e912826fd110d2442df1e34 *inst/doc/lmExample.html
 4f13e6ebdff2163244e0a6a3c74bb3e8 *inst/doc/sigrFormatting.R
 67e2f5bc7141da6d2330cb9e8566ccb0 *inst/doc/sigrFormatting.Rmd
-5b557cd038f29d653d32683e33f9f2b4 *inst/doc/sigrFormatting.html
+2fea5fdc1c986105018959d46db223b3 *inst/doc/sigrFormatting.html
 70d3ffc6d2fb83ffae34aa02e2a00db3 *inst/unit_tests/test_BD.R
 53c776b567c51083db431e0364d43280 *inst/unit_tests/test_T1.R
 430782dd14e27ed4a1662b1472592188 *man/Bernoulli_diff_stat.Rd
