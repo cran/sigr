@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="John Mount" />
 
-<meta name="date" content="2019-07-24" />
+<meta name="date" content="2020-08-11" />
 
 <title>sigr</title>
 
@@ -96,7 +96,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -117,9 +117,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -288,7 +285,8 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
 
 
@@ -303,12 +301,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">sigr</h1>
 <h4 class="author">John Mount</h4>
-<h4 class="date">2019-07-24</h4>
+<h4 class="date">2020-08-11</h4>
 
 
 
-<p>Examples of <code>sigr</code> formatting. Inspired by APA format (American Psychological Association), but not fully compliant. Discussed <a href="http://www.win-vector.com/blog/2016/10/proofing-statistics-in-papers/">here</a>.</p>
-<p>Please see <a href="https://web2.uconn.edu/writingcenter/pdf/Reporting_Statistics.pdf">here</a> and <a href="http://my.ilstu.edu/~jhkahn/apastats.html">here</a> for some notes.</p>
+<p>Examples of <code>sigr</code> formatting. Inspired by APA format (American Psychological Association), but not fully compliant. Discussed <a href="https://win-vector.com/2016/10/02/proofing-statistics-in-papers/">here</a>.</p>
+<p>Please see <a href="https://my.ilstu.edu/~jhkahn/apastats.html">here</a> for some notes.</p>
 <p>Simple formatting.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;sigr&quot;</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">sigr<span class="op">::</span><span class="kw">getRenderingFormat</span>()</a></code></pre></div>
@@ -501,6 +499,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb38-8" data-line-number="8">             <span class="dt">pLargeCutoff=</span><span class="dv">1</span>,<span class="dt">format=</span><span class="st">'ascii'</span>)</a></code></pre></div>
 <pre><code>## [1] &quot;Studentized empirical test: is difference greater than zero on re-samples,  summary: e=0.3331&quot;</code></pre>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

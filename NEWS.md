@@ -1,4 +1,9 @@
 
+# sigr 1.0.8 2020-08-11
+
+ * Change http to https where practical
+ * Badges
+
 # sigr 1.0.6 2019-07-24
 
  * Adjust license.
