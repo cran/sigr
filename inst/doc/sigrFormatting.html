@@ -12,17 +12,33 @@
 
 <meta name="author" content="John Mount" />
 
-<meta name="date" content="2020-08-11" />
+<meta name="date" content="2020-09-14" />
 
-<title>sigr</title>
+<title>sigr formatting</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,14 +48,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -48,9 +66,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -299,28 +317,28 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">sigr</h1>
+<h1 class="title toc-ignore">sigr formatting</h1>
 <h4 class="author">John Mount</h4>
-<h4 class="date">2020-08-11</h4>
+<h4 class="date">2020-09-14</h4>
 
 
 
 <p>Examples of <code>sigr</code> formatting. Inspired by APA format (American Psychological Association), but not fully compliant. Discussed <a href="https://win-vector.com/2016/10/02/proofing-statistics-in-papers/">here</a>.</p>
 <p>Please see <a href="https://my.ilstu.edu/~jhkahn/apastats.html">here</a> for some notes.</p>
 <p>Simple formatting.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(<span class="st">&quot;sigr&quot;</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">sigr<span class="op">::</span><span class="kw">getRenderingFormat</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(<span class="st">&quot;sigr&quot;</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>sigr<span class="op">::</span><span class="kw">getRenderingFormat</span>()</span></code></pre></div>
 <p>[1] “html”</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapSignificance</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">300</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapSignificance</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">300</span>)))</span></code></pre></div>
 <p><i>p</i>=0.003333</p>
 <p>F-test examples (quality of a numeric model of a numeric outcome).</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFTestImpl</span>(<span class="dt">numdf=</span><span class="dv">2</span>,<span class="dt">dendf=</span><span class="dv">55</span>,<span class="dt">FValue=</span><span class="fl">5.56</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFTestImpl</span>(<span class="dt">numdf=</span><span class="dv">2</span>,<span class="dt">dendf=</span><span class="dv">55</span>,<span class="dt">FValue=</span><span class="fl">5.56</span>)))</span></code></pre></div>
 <p><b>F Test</b> summary: (<i>R<sup>2</sup></i>=0.1682, <i>F</i>(2,55)=5.56, <i>p</i>=0.006322).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="fl">0.2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>))</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">d<span class="op">$</span>y &lt;-<span class="st"> </span><span class="kw">cos</span>(d<span class="op">$</span>x)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x,<span class="dt">data=</span>d)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">d<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="kw">predict</span>(model,<span class="dt">newdata=</span>d)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw">print</span>(<span class="kw">summary</span>(model))</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="fl">0.2</span><span class="op">*</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">20</span>))</span>
+<span id="cb4-2"><a href="#cb4-2"></a>d<span class="op">$</span>y &lt;-<span class="st"> </span><span class="kw">cos</span>(d<span class="op">$</span>x)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x,<span class="dt">data=</span>d)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>d<span class="op">$</span>prediction &lt;-<span class="st"> </span><span class="kw">predict</span>(model,<span class="dt">newdata=</span>d)</span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="kw">print</span>(<span class="kw">summary</span>(model))</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ x, data = d)
@@ -334,23 +352,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## (Intercept)  0.95686    0.12869   7.436 6.84e-07 ***
 ## x           -0.56513    0.05371 -10.521 4.06e-09 ***
 ## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 0.277 on 18 degrees of freedom
 ## Multiple R-squared:  0.8601, Adjusted R-squared:  0.8524 
 ## F-statistic: 110.7 on 1 and 18 DF,  p-value: 4.062e-09</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFTest</span>(model),<span class="dt">pSmallCutoff=</span><span class="fl">1.0e-12</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFTest</span>(model),<span class="dt">pSmallCutoff=</span><span class="fl">1.0e-12</span>))</span></code></pre></div>
 <p><b>F Test</b> summary: (<i>R<sup>2</sup></i>=0.8601, <i>F</i>(1,18)=110.7, <i>p</i>=4.062e-09).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFTest</span>(d,<span class="st">'prediction'</span>,<span class="st">'y'</span>),</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">                              <span class="dt">pSmallCutoff=</span><span class="fl">1.0e-12</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFTest</span>(d,<span class="st">&#39;prediction&#39;</span>,<span class="st">&#39;y&#39;</span>),</span>
+<span id="cb7-2"><a href="#cb7-2"></a>                              <span class="dt">pSmallCutoff=</span><span class="fl">1.0e-12</span>))</span></code></pre></div>
 <p><b>F Test</b> summary: (<i>R<sup>2</sup></i>=0.8601, <i>F</i>(1,18)=110.7, <i>p</i>=4.062e-09).</p>
 <p>Chi-squared test examples (quality of a probability model of a two category outcome).</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">       <span class="dt">y=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>))</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">model &lt;-<span class="st"> </span><span class="kw">glm</span>(y<span class="op">~</span>x,<span class="dt">data=</span>d,<span class="dt">family=</span>binomial)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">model<span class="op">$</span>converged</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</span>
+<span id="cb8-2"><a href="#cb8-2"></a>       <span class="dt">y=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>))</span>
+<span id="cb8-3"><a href="#cb8-3"></a>model &lt;-<span class="st"> </span><span class="kw">glm</span>(y<span class="op">~</span>x,<span class="dt">data=</span>d,<span class="dt">family=</span>binomial)</span>
+<span id="cb8-4"><a href="#cb8-4"></a>model<span class="op">$</span>converged</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">summary</span>(model)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">summary</span>(model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = y ~ x, family = binomial, data = d)
@@ -371,58 +389,58 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## AIC: 14.837
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">d<span class="op">$</span>pred &lt;-<span class="st"> </span><span class="kw">predict</span>(model,<span class="dt">type=</span><span class="st">'response'</span>,<span class="dt">newdata=</span>d)</a></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapChiSqTest</span>(model),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>d<span class="op">$</span>pred &lt;-<span class="st"> </span><span class="kw">predict</span>(model,<span class="dt">type=</span><span class="st">&#39;response&#39;</span>,<span class="dt">newdata=</span>d)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapChiSqTest</span>(model),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</span></code></pre></div>
 <p><b>Chi-Square Test</b> summary: <i>pseudo-<i>R<sup>2</sup></i></i>=0.02282 (<i>χ<sup>2</sup></i>(1,<i>N</i>=8)=0.2531, <i>p</i>=0.6149).</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapChiSqTest</span>(d,<span class="st">'pred'</span>,<span class="st">'y'</span>),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapChiSqTest</span>(d,<span class="st">&#39;pred&#39;</span>,<span class="st">&#39;y&#39;</span>),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</span></code></pre></div>
 <p><b>Chi-Square Test</b> summary: <i>pseudo-<i>R<sup>2</sup></i></i>=0.02282 (<i>χ<sup>2</sup></i>(1,<i>N</i>=8)=0.2531, <i>p</i>=0.6149).</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">               <span class="dt">y=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">ct &lt;-<span class="st"> </span><span class="kw">cor.test</span>(d<span class="op">$</span>x,d<span class="op">$</span>y)</a></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapCorTest</span>(ct)))</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</span>
+<span id="cb15-2"><a href="#cb15-2"></a>               <span class="dt">y=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>))</span>
+<span id="cb15-3"><a href="#cb15-3"></a>ct &lt;-<span class="st"> </span><span class="kw">cor.test</span>(d<span class="op">$</span>x,d<span class="op">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapCorTest</span>(ct)))</span></code></pre></div>
 <p><b>Pearson’s product-moment correlation</b>: (<i>r</i>=0.9767, <i>p</i>=3.094e-05).</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="st">'b'</span>,<span class="st">'a'</span>,<span class="st">'a'</span>,<span class="st">'a'</span>,<span class="st">'b'</span>,<span class="st">'b'</span>,<span class="st">'b'</span>),</a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">                <span class="dt">y=</span><span class="kw">c</span>(<span class="st">'1'</span>,<span class="st">'1'</span>,<span class="st">'1'</span>,<span class="st">'2'</span>,<span class="st">'2'</span>,<span class="st">'2'</span>,<span class="st">'2'</span>))</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3">ft &lt;-<span class="st"> </span><span class="kw">fisher.test</span>(<span class="kw">table</span>(d))</a></code></pre></div>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFisherTest</span>(ft),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="st">&#39;b&#39;</span>,<span class="st">&#39;a&#39;</span>,<span class="st">&#39;a&#39;</span>,<span class="st">&#39;a&#39;</span>,<span class="st">&#39;b&#39;</span>,<span class="st">&#39;b&#39;</span>,<span class="st">&#39;b&#39;</span>),</span>
+<span id="cb17-2"><a href="#cb17-2"></a>                <span class="dt">y=</span><span class="kw">c</span>(<span class="st">&#39;1&#39;</span>,<span class="st">&#39;1&#39;</span>,<span class="st">&#39;1&#39;</span>,<span class="st">&#39;2&#39;</span>,<span class="st">&#39;2&#39;</span>,<span class="st">&#39;2&#39;</span>,<span class="st">&#39;2&#39;</span>))</span>
+<span id="cb17-3"><a href="#cb17-3"></a>ft &lt;-<span class="st"> </span><span class="kw">fisher.test</span>(<span class="kw">table</span>(d))</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapFisherTest</span>(ft),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</span></code></pre></div>
 <p><b>Fisher’s Exact Test for Count Data</b>: (<i>odds.ratio</i>=4.45, <i>p</i>=0.4857).</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">                <span class="dt">y=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">ft &lt;-<span class="st"> </span><span class="kw">t.test</span>(d<span class="op">$</span>x,d<span class="op">$</span>y)</a></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapTTest</span>(ft),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</span>
+<span id="cb19-2"><a href="#cb19-2"></a>                <span class="dt">y=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">4</span>))</span>
+<span id="cb19-3"><a href="#cb19-3"></a>ft &lt;-<span class="st"> </span><span class="kw">t.test</span>(d<span class="op">$</span>x,d<span class="op">$</span>y)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">cat</span>(<span class="kw">render</span>(<span class="kw">wrapTTest</span>(ft),<span class="dt">pLargeCutoff=</span><span class="dv">1</span>))</span></code></pre></div>
 <p><b>Welch Two Sample t-test</b>, two.sided: (<i>t</i>=2.072, <i>df</i>=10.62, <i>p</i>=0.06349).</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">parallelCluster &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co">#parallelCluster &lt;- parallel::makeCluster(parallel::detectCores())</span></a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw">set.seed</span>(<span class="dv">25325</span>)</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6">                <span class="dt">y=</span><span class="kw">c</span>(<span class="ot">FALSE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb21-7" data-line-number="7">                    <span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8">d &lt;-<span class="st"> </span><span class="kw">rbind</span>(d,d,d,d)</a>
-<a class="sourceLine" id="cb21-9" data-line-number="9">sigr<span class="op">::</span><span class="kw">resampleTestAUC</span>(d,<span class="st">'x1'</span>,<span class="st">'y'</span>,<span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">                <span class="dt">nrep=</span><span class="dv">200</span>,</a>
-<a class="sourceLine" id="cb21-11" data-line-number="11">                <span class="dt">parallelCluster=</span>parallelCluster)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>parallelCluster &lt;-<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="co">#parallelCluster &lt;- parallel::makeCluster(parallel::detectCores())</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="kw">set.seed</span>(<span class="dv">25325</span>)</span>
+<span id="cb21-5"><a href="#cb21-5"></a>d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</span>
+<span id="cb21-6"><a href="#cb21-6"></a>                <span class="dt">y=</span><span class="kw">c</span>(<span class="ot">FALSE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,</span>
+<span id="cb21-7"><a href="#cb21-7"></a>                    <span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>))</span>
+<span id="cb21-8"><a href="#cb21-8"></a>d &lt;-<span class="st"> </span><span class="kw">rbind</span>(d,d,d,d)</span>
+<span id="cb21-9"><a href="#cb21-9"></a>sigr<span class="op">::</span><span class="kw">resampleTestAUC</span>(d,<span class="st">&#39;x1&#39;</span>,<span class="st">&#39;y&#39;</span>,<span class="ot">TRUE</span>,</span>
+<span id="cb21-10"><a href="#cb21-10"></a>                <span class="dt">nrep=</span><span class="dv">200</span>,</span>
+<span id="cb21-11"><a href="#cb21-11"></a>                <span class="dt">parallelCluster=</span>parallelCluster)</span></code></pre></div>
 <p>[1] “<b>AUC test alt. hyp. AUC&gt;0.5</b>: (<i>AUC</i>=0.6562, <i>s.d.</i>=0.09311, <i>p</i>=n.s.).”</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">25325</span>)</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2">d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">                <span class="dt">x2=</span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb22-4" data-line-number="4">                <span class="dt">y=</span><span class="kw">c</span>(<span class="ot">FALSE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb22-5" data-line-number="5">                    <span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>))</a>
-<a class="sourceLine" id="cb22-6" data-line-number="6">d &lt;-<span class="st"> </span><span class="kw">rbind</span>(d,d,d,d)</a>
-<a class="sourceLine" id="cb22-7" data-line-number="7">sigr<span class="op">::</span><span class="kw">testAUCpair</span>(d,<span class="st">'x1'</span>,<span class="st">'x2'</span>,<span class="st">'y'</span>,<span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb22-8" data-line-number="8">                    <span class="dt">nrep=</span><span class="dv">200</span>,</a>
-<a class="sourceLine" id="cb22-9" data-line-number="9">                    <span class="dt">parallelCluster=</span>parallelCluster)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">set.seed</span>(<span class="dv">25325</span>)</span>
+<span id="cb22-2"><a href="#cb22-2"></a>d &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">7</span>),</span>
+<span id="cb22-3"><a href="#cb22-3"></a>                <span class="dt">x2=</span><span class="dv">1</span>,</span>
+<span id="cb22-4"><a href="#cb22-4"></a>                <span class="dt">y=</span><span class="kw">c</span>(<span class="ot">FALSE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">FALSE</span>,</span>
+<span id="cb22-5"><a href="#cb22-5"></a>                    <span class="ot">TRUE</span>,<span class="ot">TRUE</span>,<span class="ot">FALSE</span>,<span class="ot">TRUE</span>))</span>
+<span id="cb22-6"><a href="#cb22-6"></a>d &lt;-<span class="st"> </span><span class="kw">rbind</span>(d,d,d,d)</span>
+<span id="cb22-7"><a href="#cb22-7"></a>sigr<span class="op">::</span><span class="kw">testAUCpair</span>(d,<span class="st">&#39;x1&#39;</span>,<span class="st">&#39;x2&#39;</span>,<span class="st">&#39;y&#39;</span>,<span class="ot">TRUE</span>,</span>
+<span id="cb22-8"><a href="#cb22-8"></a>                    <span class="dt">nrep=</span><span class="dv">200</span>,</span>
+<span id="cb22-9"><a href="#cb22-9"></a>                    <span class="dt">parallelCluster=</span>parallelCluster)</span></code></pre></div>
 <p>[1] “<b>AUC test resampled AUC1&gt;AUC2</b>: (<i>AUCs</i>=0.6562;0.5, <i>s.d.</i>=0.09694, <i>e</i>=n.s.).”</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1"><span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(parallelCluster)) {</a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">  parallel<span class="op">::</span><span class="kw">stopCluster</span>(parallelCluster)</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(parallelCluster)) {</span>
+<span id="cb23-2"><a href="#cb23-2"></a>  parallel<span class="op">::</span><span class="kw">stopCluster</span>(parallelCluster)</span>
+<span id="cb23-3"><a href="#cb23-3"></a>}</span></code></pre></div>
 <p>permutationScoreModel</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">25325</span>)</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb24-3" data-line-number="3">m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="kw">cor.test</span>(m,y,<span class="dt">alternative=</span><span class="st">'greater'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="kw">set.seed</span>(<span class="dv">25325</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a>y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>m &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb24-4"><a href="#cb24-4"></a><span class="kw">cor.test</span>(m,y,<span class="dt">alternative=</span><span class="st">&#39;greater&#39;</span>)</span></code></pre></div>
 <pre><code>## 
-##  Pearson's product-moment correlation
+##  Pearson&#39;s product-moment correlation
 ## 
 ## data:  m and y
 ## t = 3, df = 3, p-value = 0.02883
@@ -432,16 +450,16 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## sample estimates:
 ##       cor 
 ## 0.8660254</code></pre>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="cf">function</span>(modelValues, yValues) { <span class="kw">cor</span>(modelValues, yValues) }</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">sigr<span class="op">::</span><span class="kw">permutationScoreModel</span>(m,y,f)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>f &lt;-<span class="st"> </span><span class="cf">function</span>(modelValues, yValues) { <span class="kw">cor</span>(modelValues, yValues) }</span>
+<span id="cb26-2"><a href="#cb26-2"></a>sigr<span class="op">::</span><span class="kw">permutationScoreModel</span>(m,y,f)</span></code></pre></div>
 <pre><code>## [1] &quot;&lt;b&gt;Studentized permutation test&lt;/b&gt;: is observed score greater than permuted score,  summary: &lt;i&gt;p&lt;/i&gt;=0.04162&quot;</code></pre>
 <p>resampleScoreModel</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">25325</span>)</a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb28-3" data-line-number="3">m1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="kw">cor.test</span>(m1,y,<span class="dt">alternative=</span><span class="st">'greater'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="kw">set.seed</span>(<span class="dv">25325</span>)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>m1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="kw">cor.test</span>(m1,y,<span class="dt">alternative=</span><span class="st">&#39;greater&#39;</span>)</span></code></pre></div>
 <pre><code>## 
-##  Pearson's product-moment correlation
+##  Pearson&#39;s product-moment correlation
 ## 
 ## data:  m1 and y
 ## t = 3, df = 3, p-value = 0.02883
@@ -451,14 +469,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## sample estimates:
 ##       cor 
 ## 0.8660254</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="cf">function</span>(modelValues,yValues) {</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">  <span class="cf">if</span>((<span class="kw">sd</span>(modelValues)<span class="op">&lt;=</span><span class="dv">0</span>)<span class="op">||</span>(<span class="kw">sd</span>(yValues)<span class="op">&lt;=</span><span class="dv">0</span>)) {</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3">    <span class="kw">return</span>(<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb30-4" data-line-number="4">  }</a>
-<a class="sourceLine" id="cb30-5" data-line-number="5">  <span class="kw">cor</span>(modelValues,yValues)</a>
-<a class="sourceLine" id="cb30-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb30-7" data-line-number="7">s &lt;-<span class="st"> </span>sigr<span class="op">::</span><span class="kw">resampleScoreModel</span>(m1,y,f)</a>
-<a class="sourceLine" id="cb30-8" data-line-number="8"><span class="kw">print</span>(s)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>f &lt;-<span class="st"> </span><span class="cf">function</span>(modelValues,yValues) {</span>
+<span id="cb30-2"><a href="#cb30-2"></a>  <span class="cf">if</span>((<span class="kw">sd</span>(modelValues)<span class="op">&lt;=</span><span class="dv">0</span>)<span class="op">||</span>(<span class="kw">sd</span>(yValues)<span class="op">&lt;=</span><span class="dv">0</span>)) {</span>
+<span id="cb30-3"><a href="#cb30-3"></a>    <span class="kw">return</span>(<span class="dv">0</span>)</span>
+<span id="cb30-4"><a href="#cb30-4"></a>  }</span>
+<span id="cb30-5"><a href="#cb30-5"></a>  <span class="kw">cor</span>(modelValues,yValues)</span>
+<span id="cb30-6"><a href="#cb30-6"></a>}</span>
+<span id="cb30-7"><a href="#cb30-7"></a>s &lt;-<span class="st"> </span>sigr<span class="op">::</span><span class="kw">resampleScoreModel</span>(m1,y,f)</span>
+<span id="cb30-8"><a href="#cb30-8"></a><span class="kw">print</span>(s)</span></code></pre></div>
 <pre><code>## $fnName
 ## [1] &quot;resampleScoreModel&quot;
 ## 
@@ -476,27 +494,27 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 
 ## $n
 ## [1] 5</code></pre>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">z &lt;-<span class="st"> </span>s<span class="op">$</span>observedScore<span class="op">/</span>s<span class="op">$</span>sd  <span class="co"># always check size of z relative to bias!</span></a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">pValue &lt;-<span class="st"> </span><span class="kw">pt</span>(z,<span class="dt">df=</span><span class="kw">length</span>(y)<span class="op">-</span><span class="dv">2</span>,<span class="dt">lower.tail=</span><span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb32-3" data-line-number="3">pValue</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>z &lt;-<span class="st"> </span>s<span class="op">$</span>observedScore<span class="op">/</span>s<span class="op">$</span>sd  <span class="co"># always check size of z relative to bias!</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a>pValue &lt;-<span class="st"> </span><span class="kw">pt</span>(z,<span class="dt">df=</span><span class="kw">length</span>(y)<span class="op">-</span><span class="dv">2</span>,<span class="dt">lower.tail=</span><span class="ot">FALSE</span>)</span>
+<span id="cb32-3"><a href="#cb32-3"></a>pValue</span></code></pre></div>
 <pre><code>## [1] 0.0260677</code></pre>
 <p>resampleScoreModelPair</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">set.seed</span>(<span class="dv">25325</span>)</a>
-<a class="sourceLine" id="cb34-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3">m1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb34-4" data-line-number="4">m2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb34-5" data-line-number="5"><span class="kw">cor</span>(m1,y)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">set.seed</span>(<span class="dv">25325</span>)</span>
+<span id="cb34-2"><a href="#cb34-2"></a>y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">5</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a>m1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb34-4"><a href="#cb34-4"></a>m2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>)</span>
+<span id="cb34-5"><a href="#cb34-5"></a><span class="kw">cor</span>(m1,y)</span></code></pre></div>
 <pre><code>## [1] 0.8660254</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">cor</span>(m2,y)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="kw">cor</span>(m2,y)</span></code></pre></div>
 <pre><code>## [1] 0.7071068</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="cf">function</span>(modelValues,yValues) {</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">  <span class="cf">if</span>((<span class="kw">sd</span>(modelValues)<span class="op">&lt;=</span><span class="dv">0</span>)<span class="op">||</span>(<span class="kw">sd</span>(yValues)<span class="op">&lt;=</span><span class="dv">0</span>)) {</a>
-<a class="sourceLine" id="cb38-3" data-line-number="3">    <span class="kw">return</span>(<span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb38-4" data-line-number="4">  }</a>
-<a class="sourceLine" id="cb38-5" data-line-number="5">  <span class="kw">cor</span>(modelValues,yValues)</a>
-<a class="sourceLine" id="cb38-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb38-7" data-line-number="7">sigr<span class="op">::</span><span class="kw">render</span>(sigr<span class="op">::</span><span class="kw">resampleScoreModelPair</span>(m1,m2,y,f),</a>
-<a class="sourceLine" id="cb38-8" data-line-number="8">             <span class="dt">pLargeCutoff=</span><span class="dv">1</span>,<span class="dt">format=</span><span class="st">'ascii'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>f &lt;-<span class="st"> </span><span class="cf">function</span>(modelValues,yValues) {</span>
+<span id="cb38-2"><a href="#cb38-2"></a>  <span class="cf">if</span>((<span class="kw">sd</span>(modelValues)<span class="op">&lt;=</span><span class="dv">0</span>)<span class="op">||</span>(<span class="kw">sd</span>(yValues)<span class="op">&lt;=</span><span class="dv">0</span>)) {</span>
+<span id="cb38-3"><a href="#cb38-3"></a>    <span class="kw">return</span>(<span class="dv">0</span>)</span>
+<span id="cb38-4"><a href="#cb38-4"></a>  }</span>
+<span id="cb38-5"><a href="#cb38-5"></a>  <span class="kw">cor</span>(modelValues,yValues)</span>
+<span id="cb38-6"><a href="#cb38-6"></a>}</span>
+<span id="cb38-7"><a href="#cb38-7"></a>sigr<span class="op">::</span><span class="kw">render</span>(sigr<span class="op">::</span><span class="kw">resampleScoreModelPair</span>(m1,m2,y,f),</span>
+<span id="cb38-8"><a href="#cb38-8"></a>             <span class="dt">pLargeCutoff=</span><span class="dv">1</span>,<span class="dt">format=</span><span class="st">&#39;ascii&#39;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;Studentized empirical test: is difference greater than zero on re-samples,  summary: e=0.3331&quot;</code></pre>
 
 
