@@ -1,6 +1,6 @@
-1269ec82dabeabf82589ef1071569981 *DESCRIPTION
-6134151c697d7df92fd7929a17544b9f *NAMESPACE
-d037eed2f9d01656c7115617a971f3a4 *NEWS.md
+c48c6fc13e02e6a6cf420511f6dc6eb7 *DESCRIPTION
+e7c8a30b2811904d6a816babd3b275d1 *NAMESPACE
+cbcfb31837c0b88e5d3a1701847f0d68 *NEWS.md
 0b27bb2882cebed1233552ae9aebe7da *R/AUCTest.R
 f525cc8dae30b7e15d59789fe33a019f *R/BinomTest.R
 cc81a104119d923fca67cf01b9458be9 *R/ChiSqTest.R
@@ -11,7 +11,7 @@ f0cdfe449bd2430abcb8f1b248878a18 *R/DifferenceDistribution.R
 942c6e2462734624598788c073046f27 *R/EmpiricalFns.R
 40dcb2c80523009bd13b4f3132bc75bc *R/FTest.R
 b89f76143f95ac0549a6999c22f8c0e2 *R/FisherTest.R
-9ea2917c77b166e9dc7cebb1641d96d1 *R/ROC.R
+35ccaa9967473cf34f1f3f7b31082e14 *R/ROC.R
 fe3d6ba6d8dc88d4e05c4214f59cb8f2 *R/TInterval.R
 59c2821b8dc065138c35c7f863e5b2aa *R/TTest.R
 fe9c7d5ddd32f55aca65f3cfe0f52bc9 *R/fns.R
@@ -25,10 +25,10 @@ d9eb5d4a6202938f3fa3a4b7cc5d2497 *R/toPresentation.R
 1bd7c059bfd2bc477dd3130819416310 *build/vignette.rds
 6133e82c56df4d6925c8d0c0cd3a6643 *inst/doc/lmExample.R
 c2f237a3ef296b8c85aaeebbd7571c8c *inst/doc/lmExample.Rmd
-16696b22516a0e7c1398c040b85dd062 *inst/doc/lmExample.html
+121e5898a327b3aec32ed308ec7a1cc1 *inst/doc/lmExample.html
 64c00826ee8d1819e88a20a85cf283b1 *inst/doc/sigrFormatting.R
 b4dcc3bf0318193376f3b55efde0741d *inst/doc/sigrFormatting.Rmd
-280d567a5eef73c84085f5d900fb6878 *inst/doc/sigrFormatting.html
+3afd7472f7def510a305cf05c7bd20d7 *inst/doc/sigrFormatting.html
 70d3ffc6d2fb83ffae34aa02e2a00db3 *inst/unit_tests/test_BD.R
 53c776b567c51083db431e0364d43280 *inst/unit_tests/test_T1.R
 430782dd14e27ed4a1662b1472592188 *man/Bernoulli_diff_stat.Rd
@@ -43,7 +43,11 @@ e6540cb810d907cedb33e3f027e26456 *man/as.character.sigr_statistic.Rd
 bf68ac16d13a3083e1a85e561a5c7821 *man/calcDeviance.Rd
 fabae10052db9d458123497e51f1fffc *man/calcSSE.Rd
 79c0ab9f505ddb205411fad45e4b1ef1 *man/estimateDifferenceZeroCrossing.Rd
-d2f4ae816c7b2e1d0efb9bb7b209827d *man/find_AUC_q.Rd
+6a847e56712ad13783748d24ac318657 *man/find_AUC_q.Rd
+1b660db2a09cc44b839ef1cdbf50a317 *man/find_ROC_matching_ab.Rd
+2513263e9186da4256cdc338ecfa56ab *man/find_ROC_matching_ab1.Rd
+97f2454673096ea3f56de049aa57d7f4 *man/find_area_q.Rd
+2d08151478dd2744ca31e10551975540 *man/fit_beta_shapes.Rd
 6778adcd9bc67129751cf62401e107d6 *man/format.sigr_statistic.Rd
 97b2ddac0093120661647bd8039203ba *man/getRenderingFormat.Rd
 cdc8e35b63cdbc90fc358caa2e4b63f0 *man/permTestAUC.Rd
@@ -71,6 +75,8 @@ eb866ffa3200a94ec9e327583e560eb4 *man/render.sigr_ttest.Rd
 1743c921588a2dea954da0748cd27d0e *man/resampleScoreModelPair.Rd
 21311d464e91c024130478536a621c07 *man/resampleTestAUC.Rd
 928b4513644350dd9e1a3dad88510673 *man/run_sigr_tests.Rd
+f563e2e673c253ab22ae2b219e953e70 *man/sensitivity_and_specificity_s12p12n.Rd
+9b8aa7fe5647eb5794674ad577d38b86 *man/sensitivity_from_specificity_q.Rd
 f032746b0dd3a472d4a0a222c7c33646 *man/sigr.Rd
 d669ccfa9d2632568d42d464bf8ad1b8 *man/testAUCpair.Rd
 625a773d09db67b1b7f375e348f36736 *man/wrapBinomTest.Rd

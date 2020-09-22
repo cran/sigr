@@ -1,4 +1,10 @@
 
+# sigr 1.1.1 2020-09-22
+
+  * Fix parens in AUC area matching formula!
+  * Asymmetric ROC case.
+  * Add in more ROC parameters inference functions.
+
 # sigr 1.1.0 2020-09-14
  
  * More on ROC
