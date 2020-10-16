@@ -180,6 +180,8 @@ sensitivity_from_specificity_q <- function(Specificity, q) {
 #' Based on \url{https://win-vector.com/2020/09/13/why-working-with-auc-is-more-powerful-than-one-might-think/}
 #'
 #' @param area area to match
+#' @param ... not used, force later arguments to bind by name
+#' @param n_points how many points to use to estimte area.
 #' @return q that such that curve \code{1 - (1 - (1-Specificity)^q)^(1/q)} matches area
 #'
 #' @examples
@@ -187,12 +189,14 @@ sensitivity_from_specificity_q <- function(Specificity, q) {
 #' find_area_q(0.75)
 #'
 #' @export
-find_area_q <- function(area) {
+find_area_q <- function(area,
+                        ...,
+                        n_points = 101) {
   q_eps <- 1.e-6
   q_low <- 0
   q_high <- 1
   ex_frame <- data.frame(
-    Specificity = seq(0, 1, length.out = 101))
+    Specificity = seq(0, 1, length.out = n_points))
   while(q_low + q_eps < q_high) {
     q_mid <- (q_low + q_high)/2
     ex_frame$Sensitivity <- sensitivity_from_specificity_q(ex_frame$Specificity, q_mid)
@@ -216,6 +220,7 @@ find_area_q <- function(area) {
 #' @param ... force later arguments to bind by name.
 #' @param na.rm logical, if TRUE remove NA values.
 #' @param yTarget value considered to be positive.
+#' @param n_points number of points to use in estimates.
 #' @return q that such that curve 1 - (1 -  (1-ideal_roc$Specificity)^q)^(1/q) matches area
 #'
 #' @examples
@@ -236,7 +241,8 @@ find_area_q <- function(area) {
 find_AUC_q <- function(modelPredictions, yValues,
                        ...,
                        na.rm = FALSE,
-                       yTarget = TRUE) {
+                       yTarget = TRUE,
+                       n_points = 101) {
   wrapr::stop_if_dot_args(substitute(list(...)), "sigr::find_AUC_q")
   d <- build_ROC_curve(
     modelPredictions = modelPredictions,
@@ -244,7 +250,7 @@ find_AUC_q <- function(modelPredictions, yValues,
     na.rm = na.rm,
     yTarget = yTarget)
   area <- area_from_roc_graph(d)
-  q <- find_area_q(area)
+  q <- find_area_q(area, n_points = n_points)
   q
 }
 
@@ -273,7 +279,8 @@ fit_beta_shapes <- function(x) {
 
 #' Find beta shape parameters matching the conditional distributions.
 #'
-#' Based on \url{https://win-vector.com/2020/09/13/why-working-with-auc-is-more-powerful-than-one-might-think/}
+#' Based on \url{https://win-vector.com/2020/09/13/why-working-with-auc-is-more-powerful-than-one-might-think/}. Used to find
+#' one beta distribution on positive examples, and another on negative examples.
 #'
 #' @param modelPredictions numeric predictions (not empty), ordered (either increasing or decreasing)
 #' @param yValues truth values (not empty, same length as model predictions)
@@ -287,7 +294,7 @@ fit_beta_shapes <- function(x) {
 #'   data.frame(x = rbeta(1000, shape1 = 6, shape2 = 4), y = TRUE),
 #'   data.frame(x = rbeta(1000, shape1 = 2, shape2 = 3), y = FALSE)
 #' )
-#' find_ROC_matching_ab(modelPredictions = d$x, yValues = d$y)
+#' find_matching_conditional_betas(modelPredictions = d$x, yValues = d$y)
 #' # should be near
 #' # shape1_pos shape2_pos shape1_neg shape2_neg
 #' # 6          4          2          3
@@ -297,7 +304,7 @@ fit_beta_shapes <- function(x) {
 #' #    find_ROC_matching_ab(modelPredictions = d$x, yValues = d$y)
 #'
 #' @export
-find_ROC_matching_ab <- function(
+find_matching_conditional_betas <- function(
   modelPredictions, yValues,
   ...,
   yTarget = TRUE) {
@@ -314,14 +321,22 @@ find_ROC_matching_ab <- function(
 }
 
 
+#' @export
+#' @rdname find_matching_conditional_betas
+find_ROC_matching_ab <- find_matching_conditional_betas
+
+
+
 #' Find beta-1 shape parameters matching the conditional distributions.
 #'
-#' Based on \url{https://journals.sagepub.com/doi/abs/10.1177/0272989X15582210}
+#' Based on \url{https://journals.sagepub.com/doi/abs/10.1177/0272989X15582210}. Fits a Beta(a, 1) distribuiton on
+#' positive examples and an Beta(1, b) distribution on negative examples.
 #'
 #' @param modelPredictions numeric predictions (not empty), ordered (either increasing or decreasing)
 #' @param yValues truth values (not empty, same length as model predictions)
 #' @param ... force later arguments to bind by name.
 #' @param yTarget value considered to be positive.
+#' @param step_size size of steps in curve drawing
 #' @return beta curve shape parameters
 #'
 #' @examples
@@ -337,13 +352,14 @@ find_ROC_matching_ab <- function(
 #' #
 #' # # How to land what you want as variables
 #' # unpack[a, b] <-
-#' #    find_ROC_matching_ab1(modelPredictions = d$x, yValues = d$y)
+#' #    find_matching_a1_1b(modelPredictions = d$x, yValues = d$y)
 #'
 #' @export
-find_ROC_matching_ab1 <- function(
+find_matching_a1_1b <- function(
   modelPredictions, yValues,
   ...,
-  yTarget = TRUE) {
+  yTarget = TRUE,
+  step_size = 0.001) {
   yValues <- yValues == yTarget
   # match the displayed curve
   # fit by moment matching to get an initial guess
@@ -360,7 +376,7 @@ find_ROC_matching_ab1 <- function(
     a <- max(1, x[[1]])
     b <- max(1, x[[2]])
     ideal_roc <- sensitivity_and_specificity_s12p12n(
-      seq(0, 1, 0.01),
+      seq(0, 1, step_size),
       shape1_pos = a,
       shape2_pos = 1,
       shape1_neg = 1,
@@ -386,6 +402,10 @@ find_ROC_matching_ab1 <- function(
     b = b)
 }
 
+
+#' @export
+#' @rdname find_matching_a1_1b
+find_ROC_matching_ab1 <- find_matching_a1_1b
 
 
 #' Compute the shape1_pos, shape2_pos, shape1_neg, shape2_neg graph.
