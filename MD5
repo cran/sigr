@@ -1,6 +1,6 @@
-113e357ed1d0caf0ff6ea4c29f8ef04e *DESCRIPTION
+965d7413dcf46f25ccbfc9ed0d81777c *DESCRIPTION
 867eb9248bfa5ea8f21d5e075342c706 *NAMESPACE
-7cb2f651688ca0ec3e4a2f994d9c53bd *NEWS.md
+fe20dbcd93c9e039194504afbc36c73c *NEWS.md
 0b27bb2882cebed1233552ae9aebe7da *R/AUCTest.R
 f525cc8dae30b7e15d59789fe33a019f *R/BinomTest.R
 cc81a104119d923fca67cf01b9458be9 *R/ChiSqTest.R
@@ -25,10 +25,10 @@ d9eb5d4a6202938f3fa3a4b7cc5d2497 *R/toPresentation.R
 1bd7c059bfd2bc477dd3130819416310 *build/vignette.rds
 6133e82c56df4d6925c8d0c0cd3a6643 *inst/doc/lmExample.R
 c2f237a3ef296b8c85aaeebbd7571c8c *inst/doc/lmExample.Rmd
-e3da8cca87c95c591289f2d037dba9d6 *inst/doc/lmExample.html
+a10b8d8d9225f0f4728368a693e6945c *inst/doc/lmExample.html
 64c00826ee8d1819e88a20a85cf283b1 *inst/doc/sigrFormatting.R
 b4dcc3bf0318193376f3b55efde0741d *inst/doc/sigrFormatting.Rmd
-d8316626b35b539fccdbafcb2e8ff3c1 *inst/doc/sigrFormatting.html
+64c241c1edf4201a271a8fb8bdabdf54 *inst/doc/sigrFormatting.html
 182251a22e7844a7f49404dcef98cc13 *inst/tinytest/test_BD.R
 2ccaa4a85853de075d248b51fb996970 *inst/tinytest/test_T1.R
 f9ccaf526dc8ef26d05323cd3129094b *inst/tinytest/test_utility_calc.R
